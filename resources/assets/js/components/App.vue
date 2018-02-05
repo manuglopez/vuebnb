@@ -6,10 +6,28 @@
                 <h1>vuebnb</h1>
             </router-link>
         </div>
-        <router-view></router-view>
+        <transition name="fade">
+            <router-view></router-view>
+        </transition>
+        <custom-footer></custom-footer>
     </div>
 </template>
+<script>
+    import CustomFooter from './CustomFooter.vue';
+
+    export default {
+        components: {
+            CustomFooter
+        }
+    }
+</script>
 <style>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .75s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
     #toolbar {
         display: flex;
         align-items: center;
@@ -29,11 +47,13 @@
         font-size: 28px;
         margin: 0;
     }
+
     #toolbar a {
-         display: flex;
-         align-items: center;
-         text-decoration: none;
-     }
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
     #toolbar {
         border-bottom: 1px solid #e4e4e4;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);

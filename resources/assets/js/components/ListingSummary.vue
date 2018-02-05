@@ -1,18 +1,20 @@
 <template>
     <div class="listing-summary">
-        <div class="wrapper">
-            <div class="thumbnail" :style="backgroundImageStyle"></div>
-            <div class="info title">
-                <span>{{ listing.price_per_night }}</span>
-                <span>{{ listing.title }}</span>
+        <router-link :to="{ name: 'listing', params: { listing: listing.id } }">
+            <div class="wrapper">
+                <div class="thumbnail" :style="backgroundImageStyle"></div>
+                <div class="info title">
+                    <span>{{ listing.price_per_night }}</span>
+                    <span>{{ listing.title }}</span>
+                </div>
+                <div class="info address">{{ listing.address }}</div>
             </div>
-            <div class="info address">{{ listing.address }}</div>
-        </div>
+        </router-link>
     </div>
 </template>
 <script>
     export default {
-        props: [ 'listing' ],
+        props: ['listing'],
         computed: {
             backgroundImageStyle() {
                 return {

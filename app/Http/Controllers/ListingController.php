@@ -7,20 +7,33 @@ use Illuminate\Http\Request;
 
 class ListingController extends Controller {
 
-	private function add_meta_data( $collection, $request ) {
-		return $collection->merge( [
-			'path' => $request->getPathInfo()
-		] );
+	/**
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function get_home_api() {
+		$data = $this->getListingSumary();
+
+		return response()->json( $data );
 	}
 
+	/**
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function get_home_web( Request $request ) {
-		$collection = $this->getListingThumbnail();
+		$collection = $this->getListingSumary();
 		$data       = collect( [ 'listings' => $collection->toArray() ] );
-		$data       = $this->add_meta_data( $data, $request );
+		$data       = $this->addMetaData( $data, $request );
 
 		return view( 'app', [ 'data' => $data ] );
 	}
 
+	/**
+	 * @param Listing $listing
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function getListingApi( Listing $listing ) {
 
 		$data = $this->listingGetImages( $listing );
@@ -28,14 +41,31 @@ class ListingController extends Controller {
 		return response()->json( $data );
 	}
 
+	/**
+	 * @param Listing $listing
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function getListingWeb( Listing $listing, Request $request ) {
 
 		$data = $this->listingGetImages( $listing );
-		$data = $this->add_meta_data( $data, $request );
+		$data = $this->addMetaData( $data, $request );
 
 		return view( 'app', [ 'data' => $data ] );
 	}
 
+	/**
+	 * @param $collection
+	 * @param $request
+	 *
+	 * @return mixed
+	 */
+	protected function addMetaData( $collection, $request ) {
+		return $collection->merge( [
+			'path' => $request->getPathInfo()
+		] );
+	}
 	/**
 	 * @param Listing $listing
 	 *
@@ -54,7 +84,7 @@ class ListingController extends Controller {
 	/**
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
 	 */
-	protected function getListingThumbnail() {
+	protected function getListingSumary() {
 		$collection = Listing::all( [
 			'id',
 			'address',
@@ -62,9 +92,7 @@ class ListingController extends Controller {
 			'price_per_night'
 		] );
 		$collection->transform( function ( $listing ) {
-			$listing->thumb = asset(
-				'images/' . $listing->id . '/Image_1_thumb.jpg'
-			);
+			$listing->thumb = asset( 'images/' . $listing->id . '/Image_1_thumb.jpg' );
 
 			return $listing;
 		} );

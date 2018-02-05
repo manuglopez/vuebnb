@@ -11,5 +11,8 @@ export default new VueRouter({
     routes: [
         { path: '/', component: HomePage, name:'home' },
         { path: '/listing/:listing', component: ListingPage , name:'listing'}
-    ]
+    ],
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 }
+    }
 });

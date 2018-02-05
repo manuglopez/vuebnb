@@ -1,23 +1,24 @@
 <template>
     <div class="home-container">
-        <div v-for="(group, country) in listing_groups" class="listing-summary-group">
-            <h1>Places in {{ country }}</h1>
-            <div class="listing-summaries">
-                <listing-summary
-                        v-for="listing in group"
-                        :key="listing.id"
-                        :listing="listing"
-                ></listing-summary>
-            </div>
-        </div>
+        <listing-summary-group
+                v-for="(group, country) in listing_groups"
+                :key="country"
+                :listings="group"
+                :country="country"
+                class="listing-summary-group"
+        ></listing-summary-group>
     </div>
 </template>
 <script>
     import {groupByCountry} from '../helpers';
+    import axios from 'axios';
+    import routeMixin from '../route-mixin';
+
+
 
     let serverData = JSON.parse(window.server_data).listings;
     let listing_groups = groupByCountry(serverData);
-    import ListingSummary from './ListingSummary.vue';
+    import ListingSummaryGroup from './ListingSummaryGroup.vue';
 
     export default {
         data() {
@@ -25,8 +26,13 @@
                 listing_groups: []
             };
         },
+        methods:{
+            assignData({ listings }) {
+                this.listing_groups = groupByCountry(listings);
+            },
+        },
         components: {
-            ListingSummary
+            ListingSummaryGroup
         },
         beforeRouteEnter(to, from, next) {
             let serverData = JSON.parse(window.server_data);
@@ -34,39 +40,12 @@
                 let listing_groups = groupByCountry(serverData.listings);
                 next(component => component.listing_groups = listing_groups);
             } else {
-                console.log('Need to get data with AJAX!');
-                next(false);
+                axios.get(`/api/`).then(({ data }) => {
+                    let listing_groups = groupByCountry(data);
+                    console.log(data);
+                    next(component => component.listing_groups = listing_groups);
+                });
             }
         }
     }
 </script>
-<style>
-    .home-container {
-        margin: 0 auto;
-        padding: 0 25px;
-    }
-
-    @media (min-width: 1131px) {
-        .home-container {
-            width: 1080px;
-        }
-    }
-
-    .listing-summary-group {
-        padding-bottom: 20px;
-    }
-
-    .listing-summaries {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        overflow: hidden;
-    }
-    .listing-summaries > .listing-summary {
-        margin-right: 15px;
-    }
-    .listing-summaries > .listing-summary:last-child {
-
-        margin-right: 0;
-    }
-</style>
