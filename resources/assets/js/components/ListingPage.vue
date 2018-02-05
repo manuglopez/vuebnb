@@ -2,6 +2,7 @@
     <div>
         <header-image
                 :image-url="images[0]"
+                :id="id"
                 @header-clicked="openModal"
         ></header-image>
         <div class="listing-container">
@@ -48,6 +49,7 @@
         mixins:[routeMixin],
         data() {
             return {
+                id:null,
                 title: null,
                 about: null,
                 address: null,

@@ -22,7 +22,7 @@
         },
         watch: {
             modalOpen() {
-                var className = 'modal-open';
+                const className = 'modal-open';
                 if (this.modalOpen) {
                     document.body.classList.add(className);
                 } else {

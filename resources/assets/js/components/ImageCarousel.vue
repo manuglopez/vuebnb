@@ -37,11 +37,6 @@
            }
        }
    }
-
-
-
-
-
 </script>
 <style>
     .image-carousel {
