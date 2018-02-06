@@ -12,7 +12,7 @@
 <script>
     import {groupByCountry} from '../helpers';
     import axios from 'axios';
-    import routeMixin from '../route-mixin';
+
 
 
 
@@ -21,20 +21,25 @@
     import ListingSummaryGroup from './ListingSummaryGroup.vue';
 
     export default {
-        data() {
+        /*data() {
             return {
-                listing_groups: []
+                //this.listing_groups: []
             };
         },
         methods:{
             assignData({ listings }) {
                 this.listing_groups = groupByCountry(listings);
             },
+        },*/
+        computed: {
+            listing_groups() {
+                return groupByCountry(this.$store.state.listing_summaries);
+            }
         },
         components: {
             ListingSummaryGroup
         },
-        beforeRouteEnter(to, from, next) {
+        /*beforeRouteEnter(to, from, next) {
             let serverData = JSON.parse(window.server_data);
             if (to.path === serverData.path) {
                 let listing_groups = groupByCountry(serverData.listings);
@@ -46,6 +51,6 @@
                     next(component => component.listing_groups = listing_groups);
                 });
             }
-        }
+        }*/
     }
 </script>

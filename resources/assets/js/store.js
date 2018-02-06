@@ -5,7 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        saved: []
+        saved: [1,15],
+        listing_summaries:[],
+        listings:[]
     },
 
     mutations: {
@@ -16,6 +18,18 @@ export default new Vuex.Store({
             } else {
                 state.saved.splice(index, 1);
             }
+        },
+        addData(state,{route,data}){
+            if(route==='listing'){
+                state.listings.push(data.listing);
+            } else {
+              state.listing_summaries=data.listings;
+            }
+        }
+    },
+    getters:{
+        getListing(state) {
+            return id => state.listings.find(listing => id === listing.id);
         }
     }
 });

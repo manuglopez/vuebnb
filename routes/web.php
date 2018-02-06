@@ -13,5 +13,6 @@ use App\Listing;
 |
 */
 Route::get('/', 'ListingController@get_home_web');
+Route::get('/saved', 'ListingController@get_home_web');
 
 Route::get('/listing/{listing}', 'ListingController@getListingWeb');

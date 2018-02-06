@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('listing/{listing}', 'ListingController@getListingApi');
 Route::get('/', 'ListingController@get_home_api');
+Route::get('/saved', 'ListingController@get_home_api');
