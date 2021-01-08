@@ -1,6 +1,5 @@
 <?php
 
-use App\Listing;
 use Illuminate\Support\Facades\Route;
 
 /*
