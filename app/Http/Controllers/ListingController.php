@@ -18,8 +18,7 @@ class ListingController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function get_home_web(Request $request)
@@ -32,8 +31,7 @@ class ListingController extends Controller
     }
 
     /**
-     * @param Listing $listing
-     *
+     * @param  Listing  $listing
      * @return \Illuminate\Http\JsonResponse
      */
     public function getListingApi(Listing $listing)
@@ -44,9 +42,8 @@ class ListingController extends Controller
     }
 
     /**
-     * @param Listing $listing
-     * @param Request $request
-     *
+     * @param  Listing  $listing
+     * @param  Request  $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getListingWeb(Listing $listing, Request $request)
@@ -60,7 +57,6 @@ class ListingController extends Controller
     /**
      * @param $collection
      * @param $request
-     *
      * @return mixed
      */
     protected function addMetaData($collection, $request)
@@ -71,9 +67,7 @@ class ListingController extends Controller
     }
 
     /**
-     * @param Listing $listing
-     *
-     *
+     * @param  Listing  $listing
      * @return mixed
      */
     protected function listingGetImages(Listing $listing)
