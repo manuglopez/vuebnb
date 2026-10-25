@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vuebnb</title>
 
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/vue-style.css') }}" type="text/css">
+    @vite(['resources/assets/css/app.scss', 'resources/assets/js/main.js'])
 </head>
 <body>
 <div id="app"></div>
 <script type="text/javascript">
     window.server_data = "{!! addslashes(json_encode($data)) !!}"
 </script>
-<script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
