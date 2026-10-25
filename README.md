@@ -1,58 +1,95 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vuebnb
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Clon sencillo de Airbnb: una portada con alojamientos agrupados por ciudad, la ficha de cada alojamiento con galería, servicios y precios, y una lista de guardados.
 
-## About Laravel
+Nació en 2018 como el proyecto del libro *Full-Stack Vue.js 2 and Laravel 5* de Anthony Gore, sobre Laravel 5.5 y Vue 2. En 2026 se ha migrado entero a **Laravel 13 + Vue 3.5**, con dependencias actuales y sin vulnerabilidades conocidas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Capa | Antes (2018) | Ahora |
+|---|---|---|
+| Backend | Laravel 5.5 | Laravel 13 (PHP ≥ 8.3) |
+| Frontend | Vue 2 + Vuex | Vue 3.5 + Pinia + Vue Router 4 |
+| Build | Laravel Mix (webpack) | Vite 8 + `laravel-vite-plugin` |
+| Estilos | SCSS | CSS propio por capas (`original.css` + `design.css` con tokens) |
+| Base de datos | MySQL | SQLite por defecto (cualquier driver de Laravel sirve) |
+| Tests | PHPUnit | Pest/PHPUnit, cobertura con pcov y mutation testing con Infection |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Seguridad
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+La versión de 2018 acumulaba casi 500 alertas de Dependabot (61 críticas y 210 altas) por dependencias antiguas de npm y Composer. Tras la migración, las tres auditorías salen limpias:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer audit                  # No security vulnerability advisories found
+npm audit --package-lock-only   # found 0 vulnerabilities
+yarn audit                      # 0 vulnerabilities found
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+`.npmrc` lleva `ignore-scripts=true`, así que los paquetes de npm no ejecutan scripts al instalarse.
 
-## Contributing
+## Requisitos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- PHP 8.3 o superior con las extensiones `pdo_sqlite`, `mbstring` y `openssl`
+- Composer 2
+- Node.js `^20.19` o `>=22.12` (lo exige Vite 8) y npm
 
-## Code of Conduct
+## Puesta en marcha
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/manuglopez/vuebnb.git
+cd vuebnb
 
-## Security Vulnerabilities
+composer install
+cp .env.example .env
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+touch database/database.sqlite
+php artisan migrate --seed      # crea las tablas y carga los 30 alojamientos de database/data.json
 
-## License
+npm install
+npm run build
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+php artisan serve               # http://127.0.0.1:8000
+```
+
+Para desarrollar con recarga en caliente, usa `composer dev`, que lanza a la vez el servidor de Laravel, la cola, los logs y Vite (este último con `yarn run dev`). Si no tienes yarn, arranca por separado `php artisan serve` y `npm run dev`.
+
+## Rutas
+
+| Ruta web | Ruta API | Qué devuelve |
+|---|---|---|
+| `/` | `/api/` | Portada: alojamientos agrupados por ciudad |
+| `/saved` | `/api/saved` | Lista de guardados (se filtran en el cliente; viven en memoria, en el store de Pinia) |
+| `/listing/{id}` | `/api/listing/{id}` | Ficha del alojamiento; 404 si no existe |
+
+Las rutas web sirven la SPA con los datos iniciales incrustados en la página. Las rutas API devuelven JSON, y la SPA las usa al navegar sin recargar.
+
+## Estructura
+
+```
+app/Http/Controllers/ListingController.php   controlador de las rutas web y API
+app/Listing.php                              modelo (casts de servicios y precios)
+database/data.json                           datos de ejemplo
+public/images/{id}/                          fotos de cada alojamiento
+resources/assets/js/                         SPA: main.js, router.js, store.js, components/
+resources/assets/css/                        original.css + design.css (tokens en :root)
+resources/views/app.blade.php                plantilla única de la SPA
+```
+
+Para retocar el diseño, cambia los tokens en `:root` de `design.css` en vez de tocar los componentes.
+
+## Tests
+
+Los tests usan SQLite en memoria; no hace falta ninguna base de datos externa.
+
+```bash
+php artisan test                                  # toda la suite
+php artisan test --order-by=random                # en orden aleatorio
+php artisan test --coverage --min=97              # cobertura (requiere pcov o Xdebug)
+vendor/bin/infection --threads=4 --show-mutations # mutation testing (umbrales en infection.json5)
+vendor/bin/pint --test                            # estilo
+```
+
+## Créditos y licencia
+
+El proyecto original es de Anthony Gore ([fsvwd/vuebnb](https://github.com/fsvwd/vuebnb)), del libro *Full-Stack Vue.js 2 and Laravel 5* (Packt, 2017). Se distribuye con la misma licencia que el original, Creative Commons **BY-NC-ND 4.0** (ver [LICENSE](LICENSE)).

@@ -72,18 +72,28 @@ class ListingTest extends TestCase
     }
 
     /**
-     * Test listing model accessible attributes.
+     * Test listing model has no visible whitelist.
+     *
+     * El arreglo de front eliminó $visible (ocultaba thumb, price_*, amenity_* e image_*):
+     * sin whitelist, toArray() expone todos los atributos, que es lo que necesita la ficha.
      */
-    public function test_listing_model_accessible_attributes(): void
+    public function test_listing_model_has_no_visible_whitelist(): void
     {
         $listing = new Listing;
 
-        $visible = $listing->getVisible();
+        expect($listing->getVisible())->toBeEmpty();
 
-        expect($visible)->toContain('id');
-        expect($visible)->toContain('title');
-        expect($visible)->toContain('address');
-        expect($visible)->toContain('about');
+        // Como no hay whitelist, los campos que antes quedaban ocultos se serializan.
+        expect($listing->toArray())->not->toHaveKey('id'); // aún no hay atributos asignados
+        $listing->forceFill([
+            'id' => 3,
+            'title' => 'T',
+            'price_per_night' => '$84',
+            'amenity_wifi' => true,
+            'image_1' => '/img.jpg',
+        ]);
+        $array = $listing->toArray();
+        expect($array)->toHaveKeys(['id', 'title', 'price_per_night', 'amenity_wifi', 'image_1']);
     }
 
     /**
