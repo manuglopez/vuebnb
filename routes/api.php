@@ -1,18 +1,19 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
+||--------------------------------------------------------------------------
+|| API Routes
+||--------------------------------------------------------------------------
+||
+|| Here is where you can register API routes for your application. These
+|| routes are loaded by the RouteServiceProvider within a group which
+|| is assigned the "api" middleware group. Enjoy building your API!
+||
 */
 
-Route::get('listing/{listing}', 'ListingController@getListingApi');
-Route::get('/', 'ListingController@get_home_api');
-Route::get('/saved', 'ListingController@get_home_api');
+Route::get('/', [ListingController::class, 'get_home_api']);
+Route::get('/saved', [ListingController::class, 'get_home_api']);
+Route::get('listing/{listing}', [ListingController::class, 'getListingApi']);

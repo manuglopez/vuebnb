@@ -1,43 +1,39 @@
 <template>
     <div class="image-carousel">
-        <img v-bind:src="image"/>
+        <img :src="image"/>
         <div class="controls">
             <carousel-control dir="left" @change-image="changeImage"></carousel-control>
             <carousel-control dir="right" @change-image="changeImage"></carousel-control>
         </div>
     </div>
 </template>
-<script>
-    import  CarouselControl from './CarouselControl.vue';
-   export default{
-       name:'image-carousel',
-       components:{CarouselControl},
-       props: ['images'],
-       data() {
-           return {
-               index: 0
-           }
-       },
-       computed: {
-           image() {
-               return this.images[this.index];
-           },
-       },
 
-       methods: {
-           changeImage(val) {
-               let newVal = this.index + parseInt(val);
-               if (newVal < 0) {
-                   this.index = this.images.length -1;
-               } else if (newVal === this.images.length) {
-                   this.index = 0;
-               } else {
-                   this.index = newVal;
-               }
-           }
-       }
-   }
+<script setup>
+import { ref, computed } from 'vue';
+import CarouselControl from './CarouselControl.vue';
+
+const emit = defineEmits(['change-image']);
+
+const props = defineProps(['images']);
+
+const index = ref(0);
+
+const image = computed(() => {
+    return props.images[index.value];
+});
+
+const changeImage = (val) => {
+    let newVal = index.value + parseInt(val);
+    if (newVal < 0) {
+        index.value = props.images.length - 1;
+    } else if (newVal === props.images.length) {
+        index.value = 0;
+    } else {
+        index.value = newVal;
+    }
+};
 </script>
+
 <style>
     .image-carousel {
         height: 100%;

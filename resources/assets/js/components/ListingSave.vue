@@ -7,33 +7,37 @@
         <i v-else :class="classes"></i>
     </div>
 </template>
-<script>
-    export default {
-        props: [ 'id', 'button'],
-        methods: {
-            toggleSaved() {
-                this.$store.commit('toggleSaved', this.id);
-            }
-        },
-        computed:{
-            isListingSaved() {
-                return this.$store.state.saved.find(saved => saved === this.id);
-            },
-            message() {
-                return this.isListingSaved ? 'Saved' : 'Save';
-            },
-            classes() {
-                let saved = this.isListingSaved;
-                return {
-                    'fa': true,
-                    'fa-lg': true,
-                    'fa-heart': saved,
-                    'fa-heart-o': !saved
-                }
-            }
-        }
+
+<script setup>
+import { computed } from 'vue';
+import { useListingStore } from '../store';
+
+const props = defineProps(['id', 'button']);
+const listingStore = useListingStore();
+
+const isListingSaved = computed(() => {
+    return listingStore.saved.find(saved => saved === props.id);
+});
+
+const message = computed(() => {
+    return isListingSaved.value ? 'Saved' : 'Save';
+});
+
+const classes = computed(() => {
+    let saved = isListingSaved.value;
+    return {
+        'fa': true,
+        'fa-lg': true,
+        'fa-heart': saved,
+        'fa-heart-o': !saved
     }
+});
+
+const toggleSaved = () => {
+    listingStore.toggleSaved(props.id);
+};
 </script>
+
 <style>
     .listing-save {
         position: absolute;
@@ -45,12 +49,15 @@
     .listing-save .fa-heart-o {
         color: #ffffff;
     }
+
     .listing-save .fa-heart {
         color: #ff5a5f;
     }
+
     .listing-save button .fa-heart-o {
         color: #808080;
     }
+
     .listing-save i {
         padding-right: 4px;
     }

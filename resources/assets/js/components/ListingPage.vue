@@ -1,12 +1,15 @@
 <template>
-    <div>
+    <div class="listing-container">
+        <a href="/" class="back-link" @click.prevent="goBack">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i> Back to list
+        </a>
         <header-image
-                v-if="listing.images[0]"
+                v-if="listing.images && listing.images[0]"
                 :image-url="listing.images[0]"
                 :id="listing.id"
                 @header-clicked="openModal"
         ></header-image>
-        <div class="listing-container">
+        <div class="listing-body">
             <div class="heading">
                 <h1>{{ listing.title }}</h1>
                 <p>{{ listing.address }}</p>
@@ -18,13 +21,13 @@
             </div>
             <div class="lists">
                 <feature-list title="Amenities" :items="listing.amenities">
-                    <template slot-scope="amenity">
+                    <template #default="amenity">
                         <i class="fa fa-lg" :class="amenity.icon"></i>
                         <span>{{ amenity.title }}</span>
                     </template>
                 </feature-list>
                 <feature-list title="Prices" :items="listing.prices">
-                    <template slot-scope="price">
+                    <template #default="price">
                         {{ price.title }}: <strong>{{ price.value }}</strong>
                     </template>
                 </feature-list>
@@ -35,58 +38,49 @@
         </modal-window>
     </div>
 </template>
-<script>
-    import { populateAmenitiesAndPrices } from '../helpers';
-    let model = populateAmenitiesAndPrices(state);
-    var state = JSON.parse(window.server_data).listing;
 
-    import ImageCarousel from './ImageCarousel.vue';
-    import ModalWindow from './ModalWindow.vue';
-    import FeatureList from './FeatureList.vue';
-    import HeaderImage from './HeaderImage.vue';
-    import ExpandableText from './ExpandableText.vue';
+<script setup>
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { populateAmenitiesAndPrices } from '../helpers';
+import ImageCarousel from './ImageCarousel.vue';
+import ModalWindow from './ModalWindow.vue';
+import FeatureList from './FeatureList.vue';
+import HeaderImage from './HeaderImage.vue';
+import ExpandableText from './ExpandableText.vue';
+import { useListingStore } from '../store';
 
-    export default {
+const listingStore = useListingStore();
 
-        data() {
-            return {
-                id:null,
-                title: null,
-                about: null,
-                address: null,
-                amenities: [],
-                prices: [],
-                images: []
-            }
-        },
-        components: {
-            ImageCarousel,
-            ModalWindow,
-            FeatureList,
-            HeaderImage,
-            ExpandableText
-        },
-        computed:{
-            listing() {
-                return populateAmenitiesAndPrices(this.$store.getters.getListing(this.$route.params.listing));
-            }
-        },
-        methods: {
-            assignData({ listing }) {
-                Object.assign(this.$data, populateAmenitiesAndPrices(listing));
-            },
-            openModal() {
-                this.$refs.imagemodal.modalOpen = true;
-            }
-        }
+const route = useRoute();
+const router = useRouter();
+
+// Vuelve a la lista de la que vienes (home o saved) conservando el scroll; si se entró directo, va a la home.
+const goBack = () => {
+    if (window.history.state && window.history.state.back) {
+        router.back();
+    } else {
+        router.push({ name: 'home' });
     }
+};
+
+const listing = computed(() => {
+    return populateAmenitiesAndPrices(listingStore.getListing(route.params.listing));
+});
+
+const imagemodal = ref(null);
+
+const openModal = () => {
+    imagemodal.value.modalOpen = true;
+};
 </script>
-<style>
-    .about {
-        margin: 2em 0;
-    }
 
-    .about h3 {
-        font-size: 22px;
-    }
+<style>
+.about {
+    margin: 2em 0;
+}
+
+.about h3 {
+    font-size: 22px;
+}
 </style>

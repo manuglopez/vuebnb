@@ -1,15 +1,16 @@
 <template>
     <div>
         <div id="toolbar">
-            <router-link :to="{ name: 'home' }">
-                <img class="icon" src="/images/logo.png">
-                <h1>vuebnb</h1>
-            </router-link>
-            <ul class="links">
-                <li>
-                    <router-link :to="{ name: 'saved' }">Saved</router-link>
-                </li>
-            </ul>
+            <div class="toolbar-inner">
+                <router-link to="/">
+                    <h1>vuebnb</h1>
+                </router-link>
+                <ul class="links">
+                    <li>
+                        <router-link to="/saved">Saved</router-link>
+                    </li>
+                </ul>
+            </div>
         </div>
         <transition name="fade">
             <router-view></router-view>
@@ -17,14 +18,8 @@
         <custom-footer></custom-footer>
     </div>
 </template>
-<script>
-    import CustomFooter from './CustomFooter.vue';
-
-    export default {
-        components: {
-            CustomFooter
-        }
-    }
+<script setup>
+import CustomFooter from './CustomFooter.vue';
 </script>
 <style>
     .fade-enter-active, .fade-leave-active {
