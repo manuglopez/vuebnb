@@ -13,20 +13,20 @@
         <listing-save :id="listing.id"></listing-save>
     </div>
 </template>
-<script>
-    import ListingSave from './ListingSave.vue';
-    export default {
-        props: ['listing'],
-        components:{ListingSave},
-        computed: {
-            backgroundImageStyle() {
-                return {
-                    'background-image': `url("${this.listing.thumb}")`
-                }
-            }
-        }
-    }
+
+<script setup>
+import { computed } from 'vue';
+import ListingSave from './ListingSave.vue';
+
+const props = defineProps(['listing']);
+
+const backgroundImageStyle = computed(() => {
+    return {
+        'background-image': `url("${props.listing.thumb}")`
+    };
+});
 </script>
+
 <style>
     .listing-summary {
         flex: 0 0 auto;

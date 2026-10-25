@@ -8,21 +8,20 @@
         </div>
     </div>
 </template>
-<script>
-    import ListingSave from './ListingSave.vue';
-    export default {
 
-        computed: {
-            headerImageStyle() {
-                return {
-                    'background-image': `url(${this.imageUrl})`
-                };
-            }
-        },
-        props: [ 'image-url','id' ],
-        components:{ListingSave}
-    }
+<script setup>
+import { computed } from 'vue';
+import ListingSave from './ListingSave.vue';
+
+const props = defineProps(['imageUrl','id']);
+
+const headerImageStyle = computed(() => {
+    return {
+        'background-image': `url(${props.imageUrl})`
+    };
+});
 </script>
+
 <style>
     .header {
         height: 320px;

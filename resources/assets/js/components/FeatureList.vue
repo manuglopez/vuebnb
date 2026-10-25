@@ -11,11 +11,13 @@
         </div>
     </div>
 </template>
-<script>
-    export default {
-        props: ['title','items']
-    }
+
+<script setup>
+import { defineProps } from 'vue';
+
+const props = defineProps(['title','items']);
 </script>
+
 <style>
     hr {
         border: 0;

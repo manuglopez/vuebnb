@@ -24,7 +24,7 @@ let populateAmenitiesAndPrices = function(state) {
     images: []
   };
   for (let key in state) {
-    let arr = key.split("_");
+    let arr = key.split("");
     if (arr[0] === 'amenity') {
       obj.amenities.push(key);
     }

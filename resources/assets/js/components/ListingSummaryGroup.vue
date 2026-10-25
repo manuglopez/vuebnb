@@ -18,51 +18,43 @@
         </div>
     </div>
 </template>
-<script>
-    import ListingSummary from './ListingSummary.vue';
-    import CarouselControl from './CarouselControl.vue';
 
-    const rowSize = 3;
-    const listingSummaryWidth = 365;
+<script setup>
+import { ref, computed } from 'vue';
+import ListingSummary from './ListingSummary.vue';
+import CarouselControl from './CarouselControl.vue';
 
-    export default {
+const props = defineProps(['country', 'listings']);
 
-        props: ['country', 'listings'],
-        data() {
-            return {
-                offset: 0
-            }
-        },
-        components: {
-            ListingSummary,
-            CarouselControl
-        },
-        methods: {
-            change(val) {
-                let newVal = this.offset + parseInt(val);
-                if (newVal >= 0 && newVal <= this.listings.length - rowSize) {
-                    this.offset = newVal;
-                }
-            }
-        },
-        computed: {
-            style() {
-                return {transform: `translateX(${this.offset * -listingSummaryWidth}px)`}
-            },
-            leftArrowStyle() {
-                return {visibility: (this.offset > 0 ? 'visible' : 'hidden')}
-            },
-            rightArrowStyle() {
-                return {
-                    visibility: (
-                        this.offset < (this.listings.length - rowSize)
-                            ? 'visible' : 'hidden'
-                    )
-                }
-            }
-        }
+const rowSize = 3;
+const listingSummaryWidth = 365;
+const offset = ref(0);
+
+const change = (val) => {
+    let newVal = offset.value + parseInt(val);
+    if (newVal >= 0 && newVal <= props.listings.length - rowSize) {
+        offset.value = newVal;
     }
+};
+
+const style = computed(() => {
+    return {transform: `translateX(${offset.value * -listingSummaryWidth}px)`};
+});
+
+const leftArrowStyle = computed(() => {
+    return {visibility: (offset.value > 0 ? 'visible' : 'hidden')};
+});
+
+const rightArrowStyle = computed(() => {
+    return {
+        visibility: (
+            offset.value < (props.listings.length - rowSize)
+                ? 'visible' : 'hidden'
+        )
+    };
+});
 </script>
+
 <style>
     .listing-summary-group {
         padding-bottom: 20px;
@@ -105,6 +97,4 @@
     .listing-summaries > .listing-summary:last-child {
         margin-right: 0;
     }
-
-
 </style>

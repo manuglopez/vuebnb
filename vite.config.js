@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [
         vue(),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/assets/js/main.js'],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {

@@ -11,22 +11,21 @@
         <div v-else>No saved listings.</div>
     </div>
 </template>
-<script>
-    import ListingSummary from './ListingSummary.vue';
 
-    export default {
-        computed: {
-            listings() {
-                return this.$store.state.listing_summaries.filter(
-                    item => this.$store.state.saved.indexOf(item.id) > -1
-                );
-            }
-        },
-        components: {
-            ListingSummary
-        }
-    }
+<script setup>
+import { computed } from 'vue';
+import ListingSummary from './ListingSummary.vue';
+import { useListingStore } from '../store';
+
+const listingStore = useListingStore();
+
+const listings = computed(() => {
+    return listingStore.listing_summaries.filter(
+        item => listingStore.saved.indexOf(item.id) > -1
+    );
+});
 </script>
+
 <style>
     #saved .listing-summaries {
         display: flex;

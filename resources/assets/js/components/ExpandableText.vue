@@ -8,15 +8,13 @@
         </button>
     </div>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                contracted: true
-            }
-        }
-    }
+
+<script setup>
+import { ref } from 'vue';
+
+const contracted = ref(true);
 </script>
+
 <style>
     p {
         white-space: pre-wrap;
