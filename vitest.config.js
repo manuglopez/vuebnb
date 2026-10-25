@@ -6,6 +6,10 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    exclude: [
+      'node_modules/**',
+      'tests/e2e/**',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
