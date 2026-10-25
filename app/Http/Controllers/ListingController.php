@@ -4,62 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\View\Factory as ViewFactory;
 
 class ListingController extends Controller
 {
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * Display the listings for the web view.
      */
-    public function get_home_api()
+    public function get_home_web(Request $request): View
     {
-        $data = $this->getListingSumary();
-
-        return response()->json($data);
-    }
-
-    /**
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function get_home_web(Request $request)
-    {
-        $collection = $this->getListingSumary();
-        $data = collect(['listings' => $collection->toArray()]);
-        $data = $this->addMetaData($data, $request);
-
+        $listings = $this->getListingSummary();
+        $data = collect(['listings' => $listings->toArray()]);
+        $data = $this->addMetadata($data, $request);
         return view('app', ['data' => $data]);
     }
 
     /**
-     * @param  Listing  $listing
-     * @return \Illuminate\Http\JsonResponse
+     * Display the listings for the API.
      */
-    public function getListingApi(Listing $listing)
+    public function get_home_api(): JsonResponse
     {
-        $data = $this->listingGetImages($listing);
-
+        $data = $this->getListingSummary();
         return response()->json($data);
     }
 
     /**
-     * @param  Listing  $listing
-     * @param  Request  $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Display a specific listing for the web view.
      */
-    public function getListingWeb(Listing $listing, Request $request)
+    public function getListingWeb(Listing $listing, Request $request): View
     {
         $data = $this->listingGetImages($listing);
-        $data = $this->addMetaData($data, $request);
-
+        $data = $this->addMetadata($data, $request);
         return view('app', ['data' => $data]);
     }
 
     /**
-     * @param $collection
-     * @param $request
-     * @return mixed
+     * Display a specific listing for the API.
      */
-    protected function addMetaData($collection, $request)
+    public function getListingApi(Listing $listing): JsonResponse
+    {
+        $data = $this->listingGetImages($listing);
+        return response()->json($data);
+    }
+
+    /**
+     * Add metadata to the data collection.
+     */
+    protected function addMetadata($collection, Request $request): mixed
     {
         return $collection->merge([
             'path' => $request->getPathInfo(),
@@ -67,23 +60,21 @@ class ListingController extends Controller
     }
 
     /**
-     * @param  Listing  $listing
-     * @return mixed
+     * Get listing images for a specific listing.
      */
-    protected function listingGetImages(Listing $listing)
+    protected function listingGetImages(Listing $listing): mixed
     {
         $model = $listing->toArray();
         for ($i = 1; $i <= 4; $i++) {
-            $model['image_'.$i] = asset('images/'.$listing->id.'/Image_'.$i.'.jpg');
+            $model['image_' . $i] = asset('images/' . $listing->id . '/Image_' . $i . '.jpg');
         }
-
         return collect(['listing' => $model]);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * Get the listing summary data.
      */
-    protected function getListingSumary()
+    protected function getListingSummary(): \Illuminate\Database\Eloquent\Collection
     {
         $collection = Listing::all([
             'id',
@@ -92,8 +83,7 @@ class ListingController extends Controller
             'price_per_night',
         ]);
         $collection->transform(function ($listing) {
-            $listing->thumb = asset('images/'.$listing->id.'/Image_1_thumb.jpg');
-
+            $listing->thumb = asset('images/' . $listing->id . '/Image_1_thumb.jpg');
             return $listing;
         });
 
