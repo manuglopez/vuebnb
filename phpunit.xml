@@ -31,10 +31,4 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
     </php>
-    <coverage>
-        <report>
-            <clover outputFile="coverage/clover.xml"/>
-            <html outputDirectory="coverage/html"/>
-        </report>
-    </coverage>
 </phpunit>
