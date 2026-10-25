@@ -27,6 +27,7 @@ Homestead.yaml
 Thumbs.db
 /build/
 /coverage/
+/.stryker-tmp/
 /.factory/
 /reports/
 /test-results/

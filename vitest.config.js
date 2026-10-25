@@ -7,15 +7,19 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     exclude: [
-      'node_modules/**',
-      'tests/e2e/**',
-    ],
+          'node_modules/**',
+          'tests/e2e/**',
+          '.stryker-tmp/**',
+        ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
       include: [
         'resources/assets/js/helpers.js',
         'resources/assets/js/store.js',
+        'resources/assets/js/router.js',
+        'resources/assets/js/main.js',
+        'resources/assets/js/components/**/*.vue',
       ],
       exclude: [
         'node_modules/',

@@ -10,9 +10,7 @@
         "test:mutation": "stryker run"
     },
     "dependencies": {
-        "@vitest/coverage-v8": "^5.0.5",
         "axios": "^1.7.7",
-        "jsdom": "^30.1.3",
         "pinia": "^4.1.0",
         "vue": "^3.5.0",
         "vue-router": "^4.5.0"
@@ -20,10 +18,12 @@
     "devDependencies": {
         "@playwright/test": "^1.64.1",
         "@stryker-mutator/core": "^10.1.1",
-        "@stryker-mutator/javascript-mutator": "^4.0.0",
         "@stryker-mutator/vitest-runner": "^10.1.1",
         "@vitejs/plugin-vue": "^6.0.10",
+        "@vitest/coverage-v8": "^5.0.5",
+        "@vue/test-utils": "^2.5.1",
         "concurrently": "^10.0.3",
+        "jsdom": "^30.1.3",
         "laravel-vite-plugin": "^3.1",
         "sass": "^1.106.1",
         "vite": "^8.0.0",
@@ -32,5 +32,13 @@
     },
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.1"
+    },
+    "overrides": {
+        "typed-rest-client": {
+            "qs": "6.16.1"
+        }
+    },
+    "resolutions": {
+        "qs": "6.16.1"
     }
 }
