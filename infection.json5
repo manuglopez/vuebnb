@@ -1,0 +1,14 @@
+{
+  "source": {
+    "directories": ["app"]
+  },
+  "logs": {
+    "text": "build/infection/infection.log",
+    "summary": "build/infection/summary.log",
+    "json": "build/infection/infection.json"
+  },
+  "minMsi": 90,
+  "minCoveredMsi": 95,
+  "testFramework": "phpunit",
+  "testFrameworkOptions": "--testsuite=Feature --testsuite=Unit --test-framework=pest"
+}
