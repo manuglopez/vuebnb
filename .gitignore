@@ -27,3 +27,6 @@ Homestead.yaml
 Thumbs.db
 /build/
 /coverage/
+/.factory/
+/reports/
+/test-results/
