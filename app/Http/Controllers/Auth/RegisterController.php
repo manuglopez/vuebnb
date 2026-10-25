@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator as ValidationValidator;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +27,9 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // In Laravel 13, we use route middleware instead of controller middleware
+        // The guest middleware is applied to the register route
+        parent::__construct();
     }
 
     /**
@@ -46,7 +48,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      */
-    protected function validator(array $data)
+    public function validator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
@@ -58,7 +60,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      */
-    protected function create(array $data)
+    public function create(array $data)
     {
         return User::create([
             'name' => $data['name'],

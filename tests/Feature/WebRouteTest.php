@@ -2,31 +2,19 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Listing;
-use Database\Seeders\ListingsTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\FeatureTestCase;
 
-class WebRouteTest extends TestCase
+pest:
+    uses(FeatureTestCase::class)->in('Feature');
+
+class WebRouteTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * Seed the listings table before each test.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(ListingsTableSeeder::class);
-    }
-
     /**
      * Test the home route returns a successful response.
      */
     public function test_home_route_returns_successful_response(): void
     {
         $response = $this->get('/');
-
         $response->assertStatus(200);
         $response->assertViewIs('app');
         $response->assertViewHas('data');
@@ -38,7 +26,6 @@ class WebRouteTest extends TestCase
     public function test_saved_route_returns_successful_response(): void
     {
         $response = $this->get('/saved');
-
         $response->assertStatus(200);
         $response->assertViewIs('app');
         $response->assertViewHas('data');
@@ -49,10 +36,8 @@ class WebRouteTest extends TestCase
      */
     public function test_listing_route_returns_successful_response(): void
     {
-        $listing = Listing::first();
-
+        $listing = \App\Listing::first();
         $response = $this->get('/listing/' . $listing->id);
-
         $response->assertStatus(200);
         $response->assertViewIs('app');
         $response->assertViewHas('data');
@@ -64,7 +49,6 @@ class WebRouteTest extends TestCase
     public function test_listing_route_returns_404_for_nonexistent_listing(): void
     {
         $response = $this->get('/listing/99999');
-
         $response->assertStatus(404);
     }
 }

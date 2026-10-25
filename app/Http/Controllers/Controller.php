@@ -14,6 +14,11 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 abstract class Controller
 {
+    public function __construct()
+    {
+        // Laravel 13 controller constructor
+        // Middleware is handled via route middleware
+    }
     //
     // Controller base class for Laravel 13
     //
