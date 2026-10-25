@@ -3,19 +3,17 @@
 namespace Tests\Unit;
 
 use App\Listing;
+use Tests\TestCase;
 
-pest:
-    uses(\Tests\TestCase::class)->in('Unit');
-
-class ListingTest extends \Tests\TestCase
+class ListingTest extends TestCase
 {
     /**
      * Test Listing model boolean casts.
      */
     public function test_listing_model_boolean_casts(): void
     {
-        $listing = new Listing();
-        
+        $listing = new Listing;
+
         // Set the properties to test the casts
         $listing->amenity_wifi = false;
         $listing->amenity_pets_allowed = false;
@@ -23,7 +21,7 @@ class ListingTest extends \Tests\TestCase
         $listing->amenity_kitchen = false;
         $listing->amenity_breakfast = false;
         $listing->amenity_laptop = false;
-        
+
         expect($listing->amenity_wifi)->toBeFalse();
         expect($listing->amenity_pets_allowed)->toBeFalse();
         expect($listing->amenity_tv)->toBeFalse();
@@ -37,10 +35,10 @@ class ListingTest extends \Tests\TestCase
      */
     public function test_listing_model_cast_attributes(): void
     {
-        $listing = new Listing();
-        
+        $listing = new Listing;
+
         $cast = $listing->getCasts();
-        
+
         expect($cast)->toHaveKey('amenity_wifi');
         expect($cast)->toHaveKey('amenity_pets_allowed');
         expect($cast)->toHaveKey('amenity_tv');
@@ -54,10 +52,10 @@ class ListingTest extends \Tests\TestCase
      */
     public function test_listing_model_fillable_attributes(): void
     {
-        $listing = new Listing();
-        
+        $listing = new Listing;
+
         $fillable = $listing->getFillable();
-        
+
         expect($fillable)->toContain('title');
         expect($fillable)->toContain('address');
         expect($fillable)->toContain('about');
@@ -78,10 +76,10 @@ class ListingTest extends \Tests\TestCase
      */
     public function test_listing_model_accessible_attributes(): void
     {
-        $listing = new Listing();
-        
+        $listing = new Listing;
+
         $visible = $listing->getVisible();
-        
+
         expect($visible)->toContain('id');
         expect($visible)->toContain('title');
         expect($visible)->toContain('address');
@@ -93,8 +91,8 @@ class ListingTest extends \Tests\TestCase
      */
     public function test_listing_model_default_values(): void
     {
-        $listing = new Listing();
-        
+        $listing = new Listing;
+
         // Set the properties to test the default values
         $listing->amenity_wifi = false;
         $listing->amenity_pets_allowed = false;
@@ -102,7 +100,7 @@ class ListingTest extends \Tests\TestCase
         $listing->amenity_kitchen = false;
         $listing->amenity_breakfast = false;
         $listing->amenity_laptop = false;
-        
+
         expect($listing->amenity_wifi)->toBeFalse();
         expect($listing->amenity_pets_allowed)->toBeFalse();
         expect($listing->amenity_tv)->toBeFalse();

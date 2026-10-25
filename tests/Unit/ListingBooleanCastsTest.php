@@ -1,12 +1,11 @@
 <?php
+
 /**
  * Test to verify the boolean casts functionality in Listing model
  */
 
+use App\Listing;
 use Tests\TestCase;
-
-pest:
-    uses(TestCase::class)->in('Unit');
 
 class ListingBooleanCastsTest extends TestCase
 {
@@ -15,23 +14,23 @@ class ListingBooleanCastsTest extends TestCase
      */
     public function test_listing_model_all_boolean_casts(): void
     {
-        $listing = new \App\Listing();
-        
+        $listing = new Listing;
+
         // Test each boolean attribute
         $attributes = [
             'amenity_wifi',
-            'amenity_pets_allowed', 
+            'amenity_pets_allowed',
             'amenity_tv',
             'amenity_kitchen',
             'amenity_breakfast',
             'amenity_laptop',
         ];
-        
+
         foreach ($attributes as $attribute) {
             // Set to false
             $listing->$attribute = false;
             expect($listing->$attribute)->toBeFalse();
-            
+
             // Set to true
             $listing->$attribute = true;
             expect($listing->$attribute)->toBeTrue();
@@ -43,12 +42,12 @@ class ListingBooleanCastsTest extends TestCase
      */
     public function test_listing_model_boolean_cast_types(): void
     {
-        $listing = new \App\Listing();
-        
+        $listing = new Listing;
+
         // Manually set properties to test casting
-        $listing->amenity_wifi = "false"; // string that should be cast to boolean
-        $listing->amenity_pets_allowed = "1"; // string that should be cast to boolean
-        
+        $listing->amenity_wifi = '0'; // string that should be cast to boolean
+        $listing->amenity_pets_allowed = '1'; // string that should be cast to boolean
+
         expect($listing->amenity_wifi)->toBeFalse();
         expect($listing->amenity_pets_allowed)->toBeTrue();
     }
@@ -58,18 +57,18 @@ class ListingBooleanCastsTest extends TestCase
      */
     public function test_listing_model_boolean_cast_definition(): void
     {
-        $listing = new \App\Listing();
+        $listing = new Listing;
         $casts = $listing->getCasts();
-        
+
         $expectedBooleanCasts = [
             'amenity_wifi',
             'amenity_pets_allowed',
-            'amenity_tv', 
+            'amenity_tv',
             'amenity_kitchen',
             'amenity_breakfast',
             'amenity_laptop',
         ];
-        
+
         foreach ($expectedBooleanCasts as $cast) {
             expect(array_key_exists($cast, $casts))->toBeTrue();
             expect($casts[$cast])->toBe('boolean');

@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Listing;
 use Tests\FeatureTestCase;
-
-pest:
-    uses(FeatureTestCase::class)->in('Feature');
 
 class WebRouteTest extends FeatureTestCase
 {
@@ -36,8 +34,8 @@ class WebRouteTest extends FeatureTestCase
      */
     public function test_listing_route_returns_successful_response(): void
     {
-        $listing = \App\Listing::first();
-        $response = $this->get('/listing/' . $listing->id);
+        $listing = Listing::first();
+        $response = $this->get('/listing/'.$listing->id);
         $response->assertStatus(200);
         $response->assertViewIs('app');
         $response->assertViewHas('data');
