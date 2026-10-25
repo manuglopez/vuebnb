@@ -1,6 +1,6 @@
 <template>
     <div class="image-carousel">
-        <img v-bind:src="image"/>
+        <img :src="image"/>
         <div class="controls">
             <carousel-control dir="left" @change-image="changeImage"></carousel-control>
             <carousel-control dir="right" @change-image="changeImage"></carousel-control>

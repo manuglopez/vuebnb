@@ -18,13 +18,13 @@
             </div>
             <div class="lists">
                 <feature-list title="Amenities" :items="listing.amenities">
-                    <template slot-scope="amenity">
+                    <template #amenity="{ item: amenity }">
                         <i class="fa fa-lg" :class="amenity.icon"></i>
                         <span>{{ amenity.title }}</span>
                     </template>
                 </feature-list>
                 <feature-list title="Prices" :items="listing.prices">
-                    <template slot-scope="price">
+                    <template #price="{ item: price }">
                         {{ price.title }}: <strong>{{ price.value }}</strong>
                     </template>
                 </feature-list>
@@ -55,9 +55,11 @@ const listing = computed(() => {
 });
 
 const openModal = () => {
-    // This would need to be handled properly in Vue 3
-    console.log('Modal opened');
+    // Emit the modal open event
+    emit('open-modal');
 };
+
+const emit = defineEmits(['open-modal']);
 </script>
 
 <style>

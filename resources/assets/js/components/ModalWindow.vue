@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 
 const modalOpen = ref(false);
 
@@ -31,7 +31,7 @@ onMounted(() => {
     document.addEventListener('keyup', escapeKeyListener);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     document.removeEventListener('keyup', escapeKeyListener);
 });
 
