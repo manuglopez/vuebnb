@@ -1,7 +1,7 @@
 <template>
     <div id="saved" class="home-container">
         <h2>Saved listings</h2>
-        <div v-if="listings.length" class="listing-summaries">
+        <div v-if="listings.length" class="listing-grid">
             <listing-summary
                     v-for="listing in listings"
                     :listing="listing"
@@ -25,20 +25,3 @@ const listings = computed(() => {
     );
 });
 </script>
-
-<style>
-    #saved .listing-summaries {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: left;
-        overflow: hidden;
-    }
-
-    #saved .listing-summaries .listing-summary {
-        padding-bottom: 30px;
-    }
-
-    .listing-summaries > .listing-summary {
-        margin-right: 15px;
-    }
-</style>

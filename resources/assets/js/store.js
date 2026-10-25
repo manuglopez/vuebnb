@@ -27,7 +27,7 @@ export const useListingStore = defineStore('listing', {
 
     getters: {
         getListing(state) {
-            return id => state.listings.find(listing => id === listing.id);
+            return id => state.listings.find(listing => Number(id) === listing.id);
         }
     }
 });

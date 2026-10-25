@@ -36,6 +36,8 @@ onBeforeUnmount(() => {
 });
 
 watch(modalOpen, addModalOpenClass);
+
+defineExpose({ modalOpen });
 </script>
 
 <style>

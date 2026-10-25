@@ -3,11 +3,9 @@
         <router-link :to="{ name: 'listing', params: { listing: listing.id } }">
             <div class="wrapper">
                 <div class="thumbnail" :style="backgroundImageStyle"></div>
-                <div class="info title">
-                    <span>{{ listing.price_per_night }}</span>
-                    <span>{{ listing.title }}</span>
-                </div>
+                <div class="info title">{{ listing.title }}</div>
                 <div class="info address">{{ listing.address }}</div>
+                <div class="info price"><strong>{{ listing.price_per_night }}</strong> night</div>
             </div>
         </router-link>
         <listing-save :id="listing.id"></listing-save>

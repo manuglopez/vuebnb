@@ -1,0 +1,347 @@
+/*
+ * vuebnb — capa de diseño (se carga la ÚLTIMA, después de original.css y de los <style> de los componentes).
+ * Tokens arriba; todas las reglas usan los tokens. No añadir colores ni tamaños sueltos fuera de :root.
+ */
+:root {
+    /* Tipografía */
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Source Sans 3', 'Open Sans', system-ui, sans-serif;
+
+    /* Escala tipográfica */
+    --fs-xs: 13px;
+    --fs-sm: 14px;
+    --fs-base: 16px;
+    --fs-md: 18px;
+    --fs-lg: 24px;
+    --fs-xl: clamp(26px, 3vw, 32px);
+    --fs-2xl: clamp(30px, 4.2vw, 44px);
+
+    /* Color */
+    --ink: #222222;
+    --muted: #6a6a6a;
+    --line: #e6e6e6;
+    --surface: #ffffff;
+    --surface-soft: #f7f7f5;
+    --brand: #3aa876;      /* verde Vue, un punto más oscuro para que el texto contraste */
+    --accent: #008489;     /* enlaces y "+ More" */
+    --heart: #ff5a5f;
+
+    /* Espaciado (múltiplos de 4) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    /* Layout: la página crece hasta 1440px; la rejilla mete tantas columnas como quepan */
+    --page-max: 1440px;
+    --card-min: 260px;
+    --grid-gap-x: 24px;
+    --grid-gap-y: 40px;
+    --reading-max: 720px;
+    --gutter: clamp(20px, 4vw, 40px);
+
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 16px rgba(0, 0, 0, .06);
+}
+
+/* ---------- Base ---------- */
+body {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--surface);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    text-wrap: balance;
+}
+
+a { color: var(--accent); }
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: var(--space-6) 0;
+}
+
+/* Contenedor único de página: home, saved, ficha y footer */
+.home-container,
+.listing-container,
+.toolbar-inner {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    box-sizing: content-box;
+}
+
+/* ---------- Toolbar ---------- */
+#toolbar {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: saturate(1.4) blur(6px);
+    border-bottom: 1px solid var(--line);
+    box-shadow: none;
+}
+
+#toolbar .toolbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+#toolbar h1 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--brand);
+    letter-spacing: -0.02em;
+}
+
+#toolbar ul { padding: 0; }
+
+#toolbar ul li { padding: 0; }
+
+#toolbar ul li a {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ink);
+    padding: var(--space-2) var(--space-3);
+    border-radius: 999px;
+}
+
+#toolbar ul li a:hover {
+    border-bottom: 0;
+    padding-bottom: var(--space-2);
+    background: var(--surface-soft);
+}
+
+/* ---------- Home: grupos por país ---------- */
+.home-container { padding-top: var(--space-7); }
+
+.listing-summary-group { padding-bottom: var(--space-7); }
+
+.listing-summary-group h1 {
+    font-size: var(--fs-xl);
+    margin: 0 0 var(--space-5);
+}
+
+/* Rejilla de tarjetas (home y saved): 1 col en móvil, 2-3 en tablet, 4-5 en escritorio */
+.listing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--card-min), 100%), 1fr));
+    gap: var(--grid-gap-y) var(--grid-gap-x);
+}
+
+.listing-grid > .listing-summary { margin: 0; }
+
+/* ---------- Tarjeta de alojamiento ---------- */
+.listing-summary .wrapper { max-width: none; }
+
+.listing-summary .thumbnail {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.listing-summary a:hover .thumbnail,
+.listing-summary a:focus-visible .thumbnail {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.listing-summary .info { color: var(--ink); }
+
+.listing-summary .info.title {
+    padding-top: var(--space-3);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.listing-summary .info.address {
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.listing-summary .info.price {
+    padding-top: var(--space-1);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+}
+
+.listing-summary .info.price strong {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.listing-summary .listing-save {
+    top: var(--space-3);
+    right: var(--space-3);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+}
+
+/* ---------- Saved ---------- */
+#saved h2 {
+    font-size: var(--fs-xl);
+    margin: 0 0 var(--space-5);
+}
+
+#saved > div:not(.listing-grid) { color: var(--muted); }
+
+/* ---------- Ficha ---------- */
+.listing-container { padding-top: var(--space-5); }
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.back-link .fa { font-size: 11px; }
+
+.back-link:hover { text-decoration: underline; }
+
+.listing-container .header {
+    height: clamp(240px, 42vw, 440px);
+    margin-bottom: var(--space-6);
+}
+
+.listing-container .header .header-img {
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.header .header-img button {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink);
+    border: 0;
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    box-shadow: var(--shadow);
+}
+
+.header .header-img .listing-save {
+    top: var(--space-4);
+    right: var(--space-4);
+}
+
+.header .header-img button.view-photos {
+    left: var(--space-4);
+    bottom: var(--space-4);
+}
+
+.listing-body { max-width: var(--reading-max); }
+
+.listing-body .heading h1 {
+    font-size: var(--fs-2xl);
+    margin: 0 0 var(--space-2);
+}
+
+.listing-body .heading p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-md);
+}
+
+.listing-body .about h3 {
+    font-size: var(--fs-lg);
+    margin: 0 0 var(--space-4);
+}
+
+.listing-body .about p {
+    font-size: var(--fs-md);
+    line-height: 1.7;
+    margin: 0 0 var(--space-3);
+}
+
+.listing-body .about p.contracted {
+    height: 200px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+}
+
+.about button.more {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    color: var(--accent);
+}
+
+/* Amenities / Prices */
+.listing-body .list { margin: var(--space-6) 0; }
+
+.listing-body .list .title strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+}
+
+.listing-body .list .list-item {
+    font-size: var(--fs-base);
+    margin-bottom: var(--space-3);
+}
+
+.listing-body .list .list-item > i {
+    width: 32px;
+    color: var(--muted);
+}
+
+/* ---------- Footer ---------- */
+#footer { margin-bottom: var(--space-7); }
+
+#footer .hr {
+    border-bottom: 1px solid var(--line);
+    margin: var(--space-7) 0 var(--space-5);
+}
+
+#footer p {
+    font-size: var(--fs-sm);
+    color: var(--muted) !important;
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 743px) {
+    .listing-body .list { flex-direction: column; }
+
+    .listing-body .list .title { margin-bottom: var(--space-4); }
+
+    :root { --grid-gap-y: 32px; }
+
+    .listing-summary .listing-save { left: auto; right: var(--space-3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .listing-summary .thumbnail { transition: none; }
+}

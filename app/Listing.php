@@ -33,14 +33,4 @@ class Listing extends Model
         'price_weekly_discount',
         'price_monthly_discount',
     ];
-
-    /**
-     * The attributes that should be visible in arrays.
-     */
-    protected $visible = [
-        'id',
-        'title',
-        'address',
-        'about',
-    ];
 }

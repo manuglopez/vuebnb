@@ -7,7 +7,6 @@ import ListingPage from './components/ListingPage.vue';
 import HomePage from './components/HomePage.vue';
 import SavedPage from './components/SavedPage.vue';
 
-const listingStore = useListingStore();
 
 const routes = [
     {path: '/', component: HomePage, name: 'home'},
@@ -19,11 +18,12 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
     scrollBehavior(to, from, savedPosition) {
-        return {x: 0, y: 0};
+        return savedPosition || {top: 0};
     },
 });
 
 router.beforeEach(async (to, from, next) => {
+    const listingStore = useListingStore();
     try {
         let serverData = {};
         if (window.server_data) {
@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
         } else if (!serverData.path || to.path !== serverData.path) {
             const response = await axios.get(`/api${to.path}`);
             if (isListingRoute) {
-                listingStore.addData({route: to.name, data: response.data.listing});
+                listingStore.addData({route: to.name, data: response.data});
             } else {
                 listingStore.addData({route: to.name, data: response.data});
             }

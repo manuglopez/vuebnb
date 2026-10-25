@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
-import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
@@ -9,16 +7,10 @@ export default defineConfig({
     plugins: [
         vue(),
         laravel({
-            // SCSS entry (Tailwind + global styles) + Vue 3.5 entry
+            // SCSS entry + Vue 3.5 entry (CSS real: original.css + design.css, importados en main.js)
             input: ['resources/assets/css/app.scss', 'resources/assets/js/main.js'],
             refresh: true,
-            fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
-            ],
         }),
-        tailwindcss(),
         // Copy listing images to public/images during build (for php artisan serve)
         viteStaticCopy({
             targets: [

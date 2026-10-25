@@ -1,14 +1,16 @@
 <template>
     <div>
         <div id="toolbar">
-            <router-link to="/">
-                <h1>vuebnb</h1>
-            </router-link>
-            <ul class="links">
-                <li>
-                    <router-link to="/saved">Saved</router-link>
-                </li>
-            </ul>
+            <div class="toolbar-inner">
+                <router-link to="/">
+                    <h1>vuebnb</h1>
+                </router-link>
+                <ul class="links">
+                    <li>
+                        <router-link to="/saved">Saved</router-link>
+                    </li>
+                </ul>
+            </div>
         </div>
         <transition name="fade">
             <router-view></router-view>

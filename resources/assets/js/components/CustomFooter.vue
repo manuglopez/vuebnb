@@ -1,21 +1,13 @@
 <template>
     <div id="footer">
         <div class="hr"></div>
-        <div :class="containerClass">
+        <div class="home-container">
             <p>
                 <span><strong>Vuebnb</strong>. A full-stack Vue.js and Laravel demo app</span>
             </p>
         </div>
     </div>
 </template>
-
-<script setup>
-import { computed } from 'vue';
-
-const containerClass = computed(() => {
-    return `${window.location.pathname === '/' ? 'home' : 'listing'}-container`;
-});
-</script>
 
 <style>
 #footer {
